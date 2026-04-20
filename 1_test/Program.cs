@@ -8,8 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Naloga: MVC aplikacija z DI, EF Core in PRG (navodilo: "Izdelajte spletno aplikacijo ...", "Code First").
 builder.Services.AddControllersWithViews(options =>
 {
+    // Naloga: datum mora biti dd.MM.yyyy (navodilo: "Datum mora biti v pravilnem formatu").
+    options.ModelBinderProviders.Insert(0, new StrictDateModelBinderProvider());
     // Naloga: podpora za decimalno piko in vejico (navodilo: "V primeru tezav s tipom Double").
-    options.ModelBinderProviders.Insert(0, new FlexibleDoubleModelBinderProvider());
+    options.ModelBinderProviders.Insert(1, new FlexibleDoubleModelBinderProvider());
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>

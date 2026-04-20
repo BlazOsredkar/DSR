@@ -10,8 +10,16 @@ dotnet restore
 dotnet run
 ```
 
-Podatkovna baza se ustvari ob prvem zagonu z `EnsureCreated()` in se napolni s semenskimi podatki.
+Podatkovna baza se ustvari z migracijami in se napolni s semenskimi podatki.
 To je v [1_test/Data/DbSeeder.cs](1_test/Data/DbSeeder.cs).
+
+Ce zelis ročno ustvariti migracije:
+
+```bash
+cd 1_test
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
 
 ## Izbrane entitete (3 glavne entitete)
 
@@ -24,7 +32,7 @@ Vse entitete vsebujejo osnovne tipe (DateTime, String, Int, Double) in validacij
 ## Code First baza in kontekst
 
 - DbContext z DbSet polji: [1_test/Data/AppDbContext.cs](1_test/Data/AppDbContext.cs)
-- Sejanje podatkov in `EnsureCreated()`: [1_test/Data/DbSeeder.cs](1_test/Data/DbSeeder.cs)
+- Sejanje podatkov in `Migrate()`: [1_test/Data/DbSeeder.cs](1_test/Data/DbSeeder.cs)
 - Povezava na SQLite v konfiguraciji: [1_test/appsettings.json](1_test/appsettings.json)
 - Registracija DB in sej: [1_test/Program.cs](1_test/Program.cs)
 
@@ -56,13 +64,17 @@ To izpolni zahtevo, da razred za bazo ne vsebuje podatkov o geslu.
 - Bootstrap je vkljucen v layout: [1_test/Views/Shared/_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
 - Uporabljeni so Bootstrap grid in komponente v viewih (npr. domača stran).
 
-## Strani za glavne entitete
+## Strani za glavne entitete (dynamicne)
 
 - Uporabniki (seznam/CRUD): [1_test/Views/Users/Index.cshtml](1_test/Views/Users/Index.cshtml)
 - Knjige (seznam/CRUD): [1_test/Views/Books/Index.cshtml](1_test/Views/Books/Index.cshtml)
 - Narocila (accordion prikaz): [1_test/Views/Orders/Index.cshtml](1_test/Views/Orders/Index.cshtml)
 
-Namesto statike je prikaz dinamicen (podatki iz baze), kar je razsirjena verzija navodila.
+## Strani za glavne entitete (staticne)
+
+- Uporabniki (staticno): [1_test/Views/Presentation/Users.cshtml](1_test/Views/Presentation/Users.cshtml)
+- Knjige (staticno): [1_test/Views/Presentation/Books.cshtml](1_test/Views/Presentation/Books.cshtml)
+- Narocila (staticno): [1_test/Views/Presentation/Orders.cshtml](1_test/Views/Presentation/Orders.cshtml)
 
 ## jQuery UI komponente
 
@@ -115,6 +127,11 @@ Kako deluje:
 - EMSO custom atribut: [1_test/Validation/EmsoAttribute.cs](1_test/Validation/EmsoAttribute.cs)
 - Validacija v korakih: [1_test/Models/ViewModels/RegistrationStep1ViewModel.cs](1_test/Models/ViewModels/RegistrationStep1ViewModel.cs), [1_test/Models/ViewModels/RegistrationStep3ViewModel.cs](1_test/Models/ViewModels/RegistrationStep3ViewModel.cs)
 
+### Strogi format datuma (dd.MM.yyyy)
+
+- Custom model binder za DateTime: [1_test/Infrastructure/StrictDateModelBinder.cs](1_test/Infrastructure/StrictDateModelBinder.cs)
+- Registracija binderja: [1_test/Program.cs](1_test/Program.cs)
+
 ## Dodatno: Double z vejico/piko
 
 - Custom model binder za Double: [1_test/Infrastructure/FlexibleDoubleModelBinder.cs](1_test/Infrastructure/FlexibleDoubleModelBinder.cs)
@@ -125,3 +142,12 @@ Kako deluje:
 - Uporabniki CRUD: [1_test/Controllers/UsersController.cs](1_test/Controllers/UsersController.cs)
 - Knjige CRUD: [1_test/Controllers/BooksController.cs](1_test/Controllers/BooksController.cs)
 - Narocila (seznam): [1_test/Controllers/OrdersController.cs](1_test/Controllers/OrdersController.cs)
+
+## Kako deluje (na kratko za test)
+
+1. Ob zagonu se aplikacija zazene, uporabi migracije in doda semenske podatke.
+2. Layout vedno nalozi glavo, navigacijo, nogo in trenutni datum/cas.
+3. Strani entitet imajo posebej staticne predstavitve in posebej dinamicne CRUD sezname.
+4. 4-koracna registracija shranjuje podatke v sejo in uporablja PRG.
+5. Zavihki (Tabs) so en obrazec z validacijo, po oddaji sledi PRG in povzetek.
+6. `EditorForModel()` uporabi predloge tipov (slider, datepicker), `DisplayForModel()` prikaze vrednosti.

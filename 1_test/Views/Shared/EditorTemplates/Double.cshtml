@@ -7,8 +7,12 @@
     var fieldName = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty);
     var fieldId = TagBuilder.CreateSanitizedId(fieldName, "_");
     var range = ViewData.ModelMetadata.ValidatorMetadata.OfType<RangeAttribute>().FirstOrDefault();
-    var min = range?.Minimum ?? 0.0;
-    var max = range?.Maximum ?? 100.0;
+    var minValue = range?.Minimum ?? 0.0;
+    var maxValue = range?.Maximum ?? 100.0;
+    var min = Convert.ToDouble(minValue, CultureInfo.InvariantCulture);
+    var max = Convert.ToDouble(maxValue, CultureInfo.InvariantCulture);
+    var minText = min.ToString("0.##", CultureInfo.InvariantCulture);
+    var maxText = max.ToString("0.##", CultureInfo.InvariantCulture);
     var value = Model ?? 0.0;
     var formatted = value.ToString("0.##", CultureInfo.InvariantCulture);
 }
@@ -20,8 +24,8 @@
            name="@fieldName"
            value="@formatted"
            class="form-control js-slider-input"
-           data-min="@min"
-           data-max="@max"
+           data-min="@minText"
+           data-max="@maxText"
            data-step="0.1" />
     <div class="js-slider" data-target="#@fieldId"></div>
 </div>

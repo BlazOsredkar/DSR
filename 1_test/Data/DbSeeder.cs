@@ -10,8 +10,8 @@ public static class DbSeeder
         using var scope = app.ApplicationServices.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        // Naloga: Code First baza (navodilo: "Za shranjevanje podatkov ... postavite podatkovno bazo").
-        context.Database.EnsureCreated();
+        // Naloga: Code First baza z migracijami (navodilo: "postavite podatkovno bazo").
+        context.Database.Migrate();
 
         if (!context.Users.Any())
         {

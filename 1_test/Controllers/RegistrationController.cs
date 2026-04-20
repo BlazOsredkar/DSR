@@ -87,7 +87,7 @@ public class RegistrationController : Controller
         {
             Email = data.Email,
             Password = data.Password,
-            ConfirmPassword = data.Password
+            ConfirmPassword = data.ConfirmPassword
         };
 
         return View(model);
@@ -105,6 +105,7 @@ public class RegistrationController : Controller
         var data = GetSessionData();
         data.Email = model.Email;
         data.Password = model.Password;
+        data.ConfirmPassword = model.ConfirmPassword;
         SaveSessionData(data);
 
         return RedirectToAction(nameof(Summary));
