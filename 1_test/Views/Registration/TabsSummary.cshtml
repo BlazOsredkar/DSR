@@ -1,0 +1,15 @@
+@model _1_test.Models.UserWithPassword
+@{
+    ViewData["Title"] = "Registracija - povzetek (zavihki)";
+}
+
+<div class="card-panel">
+    <h1>Registracija - povzetek (zavihki)</h1>
+    <p class="form-note">Prikaz vpisanih podatkov (DisplayForModel).</p>
+
+    @Html.DisplayForModel()
+
+    <div class="form-section">
+        <a class="btn btn-outline-secondary" asp-action="Tabs">Nazaj na obrazec</a>
+    </div>
+</div>

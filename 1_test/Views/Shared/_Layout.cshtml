@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DSR Knjigarna</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_1_test.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <!-- Naloga: glava + navigacija (navodilo: "Glavo, nogo, sekcijo za navigacijo ... uporabite Layout"). -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DSR Knjigarna</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav"
+                        aria-expanded="false" aria-label="Odpri meni">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Domov</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Uporabniki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Books" asp-action="Index">Knjige</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="Index">Narocila</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="Step1">Registracija (koraki)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="Tabs">Registracija (zavihki)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Forms" asp-action="UserForm">Obrazec uporabnik</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Forms" asp-action="BookForm">Obrazec knjiga</a>
+                        </li>
+                    </ul>
+                    <div class="current-time">
+                        <!-- Naloga: izpis datuma in casa (navodilo: "Vsakic ko nalozite spletno stran ..."). -->
+                        @DateTime.Now.ToString("dd.MM.yyyy HH:mm")
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container main-shell">
+        <main role="main" class="content pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            &copy; 2026 - DSR Knjigarna
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

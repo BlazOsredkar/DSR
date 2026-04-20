@@ -1,0 +1,17 @@
+@model _1_test.Models.Book
+@{
+    ViewData["Title"] = "Brisi knjigo";
+}
+
+<div class="card-panel">
+    <h1>Brisi knjigo</h1>
+    <p>Ali res zelis izbrisati knjigo?</p>
+
+    @Html.DisplayForModel()
+
+    <form asp-action="Delete" method="post" class="form-section">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Brisi</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazaj</a>
+    </form>
+</div>

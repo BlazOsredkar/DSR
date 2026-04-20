@@ -1,0 +1,122 @@
+@model _1_test.Models.UserWithPassword
+@{
+    ViewData["Title"] = "Registracija - zavihki";
+    var birthPlaces = new List<string> { "Ljubljana", "Maribor", "Celje", "Koper", "Novo mesto" };
+}
+
+<div class="card-panel">
+    <h1>Registracija - zavihki</h1>
+    <p class="form-note">Vsa polja so obvezna. Validacija je na strelnisku (Data Annotations).</p>
+
+    <form asp-action="Tabs" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Naloga: zavihki (navodilo: "Obrazec ... zamenjali zavihki"). -->
+        <div class="js-tabs">
+            <ul>
+                <li><a href="#tab-1">Osebni podatki</a></li>
+                <li><a href="#tab-2">Naslov</a></li>
+                <li><a href="#tab-3">Prijava</a></li>
+            </ul>
+
+            <div id="tab-1">
+                <div class="form-section">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="BirthDate" class="form-label"></label>
+                    @Html.EditorFor(model => model.BirthDate)
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="BirthPlace" class="form-label"></label>
+                    <select asp-for="BirthPlace" class="form-select">
+                        <option value="">-- Izberi kraj --</option>
+                        @foreach (var place in birthPlaces)
+                        {
+                            if (place == Model.BirthPlace)
+                            {
+                                <option value="@place" selected>@place</option>
+                            }
+                            else
+                            {
+                                <option value="@place">@place</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="BirthPlace" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="Emso" class="form-label"></label>
+                    <input asp-for="Emso" class="form-control" />
+                    <span asp-validation-for="Emso" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="Age" class="form-label"></label>
+                    @Html.EditorFor(model => model.Age)
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div id="tab-2">
+                <div class="form-section">
+                    <label asp-for="Address" class="form-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="PostalCode" class="form-label"></label>
+                    <input asp-for="PostalCode" class="form-control" />
+                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="Country" class="form-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div id="tab-3">
+                <div class="form-section">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-section">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Naprej</button>
+    </form>
+</div>

@@ -1,0 +1,46 @@
+@model _1_test.Models.ViewModels.RegistrationStep1ViewModel
+@{
+    ViewData["Title"] = "Registracija - korak 1";
+}
+
+<div class="card-panel">
+    <!-- Naloga: 4-koracni obrazec (navodilo: "obrazec iz 4 korakov registracije uporabnika"). -->
+    <h1>Registracija - korak 1</h1>
+    <p class="form-note">Vpis osebnih podatkov (ime, priimek, datum rojstva, EMSO, starost).</p>
+
+    <form asp-action="Step1" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-section">
+            <label asp-for="FirstName" class="form-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="LastName" class="form-label"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="BirthDate" class="form-label"></label>
+            @Html.EditorFor(model => model.BirthDate)
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="Emso" class="form-label"></label>
+            <input asp-for="Emso" class="form-control" />
+            <span asp-validation-for="Emso" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="Age" class="form-label"></label>
+            @Html.EditorFor(model => model.Age)
+            <span asp-validation-for="Age" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Naprej</button>
+    </form>
+</div>

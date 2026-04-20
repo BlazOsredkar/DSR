@@ -1,0 +1,19 @@
+@model _1_test.Models.User
+@{
+    ViewData["Title"] = "Dodaj uporabnika";
+}
+
+<div class="card-panel">
+    <h1>Dodaj uporabnika</h1>
+    <p class="form-note">Polja so obvezna. Uporabljeni so EditorTemplates za Int32/DateTime.</p>
+
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.EditorForModel()
+
+        <div class="form-section">
+            <button type="submit" class="btn btn-primary">Shrani</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Nazaj</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,15 @@
+@model DateTime?
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var fieldName = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty);
+  var fieldId = TagBuilder.CreateSanitizedId(fieldName, "_");
+    var value = Model.HasValue ? Model.Value.ToString("dd.MM.yyyy") : string.Empty;
+}
+
+<!-- Naloga: DateTime koledar (navodilo: "Tipu DateTime koledar"). -->
+<input type="text"
+  id="@fieldId"
+  name="@fieldName"
+  value="@value"
+  class="form-control js-datepicker"
+  placeholder="dd.mm.llll" />

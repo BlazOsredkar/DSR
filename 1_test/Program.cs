@@ -1,40 +1,54 @@
-// Naloga 1-5: Vstopna točka aplikacije
-// Tukaj nastavimo vse storitve in middleware za ASP.NET Core MVC
-
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
-using RentACar.Data;
+using _1_test.Data;
+using _1_test.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Dodamo MVC storitve (kontrolerji + pogledi)
-builder.Services.AddControllersWithViews();
+// Naloga: MVC aplikacija z DI, EF Core in PRG (navodilo: "Izdelajte spletno aplikacijo ...", "Code First").
+builder.Services.AddControllersWithViews(options =>
+{
+    // Naloga: podpora za decimalno piko in vejico (navodilo: "V primeru tezav s tipom Double").
+    options.ModelBinderProviders.Insert(0, new FlexibleDoubleModelBinderProvider());
+});
 
-// Naloga 5: Dodamo Entity Framework Core z SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Dodamo session za PRG vzorec (Naloga 3 in 4)
-builder.Services.AddSession();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".DSR.Session";
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
+var slCulture = new CultureInfo("sl-SI");
+CultureInfo.DefaultThreadCurrentCulture = slCulture;
+CultureInfo.DefaultThreadCurrentUICulture = slCulture;
 
 var app = builder.Build();
 
-// Napake v produkciji
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // Za CSS, JS, slike
 app.UseRouting();
-app.UseSession(); // Vklopimo session
+
+app.UseSession();
 app.UseAuthorization();
 
-// Privzeta pot: /Home/Index
+app.MapStaticAssets();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
+DbSeeder.Seed(app);
+
 
 app.Run();

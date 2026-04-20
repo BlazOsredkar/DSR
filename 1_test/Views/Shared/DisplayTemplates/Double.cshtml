@@ -1,0 +1,7 @@
+@model double?
+@using System.Globalization
+@{
+    var value = Model ?? 0.0;
+}
+
+@value.ToString("0.##", CultureInfo.CurrentCulture)

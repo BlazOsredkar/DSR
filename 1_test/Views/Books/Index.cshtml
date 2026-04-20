@@ -1,0 +1,38 @@
+@model IEnumerable<_1_test.Models.Book>
+@{
+    ViewData["Title"] = "Knjige";
+}
+
+<div class="card-panel">
+    <h1>Knjige</h1>
+    <p>Seznam izdelkov/storitev v sistemu (knjige).</p>
+    <a class="btn btn-primary" asp-action="Create">Dodaj knjigo</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Avtor</th>
+            <th>Cena</th>
+            <th>Zaloga</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Author</td>
+            <td>@item.Price.ToString("0.##")</td>
+            <td>@item.Stock</td>
+            <td class="text-end">
+                <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a>
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Uredi</a>
+                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Brisi</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

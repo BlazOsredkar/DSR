@@ -1,28 +1,24 @@
-// Naloga 1: Domača stran aplikacije
-// Prikazuje seznam avtov (Naloga 5: iz baze, prej statično)
-
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RentACar.Data;
+using _1_test.Models;
 
-namespace RentACar.Controllers
+namespace _1_test.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    public IActionResult Index()
     {
-        private readonly AppDbContext _db;
+        return View();
+    }
 
-        public HomeController(AppDbContext db)
-        {
-            _db = db;
-        }
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-        // Naloga 1: Prikaže domačo stran
-        // Naloga 5: Avti se naložijo iz baze
-        public async Task<IActionResult> Index()
-        {
-            // Naloga 1: Prikažemo vse avte na domači strani
-            var avti = await _db.Avti.ToListAsync();
-            return View(avti);
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

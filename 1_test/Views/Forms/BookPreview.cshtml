@@ -1,0 +1,13 @@
+@model _1_test.Models.Book
+@{
+    ViewData["Title"] = "Predogled knjige";
+}
+
+<div class="card-panel">
+    <h1>Predogled knjige (DisplayForModel)</h1>
+    @Html.DisplayForModel()
+
+    <div class="form-section">
+        <a class="btn btn-outline-secondary" asp-action="BookForm">Nazaj na obrazec</a>
+    </div>
+</div>

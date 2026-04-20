@@ -1,0 +1,19 @@
+@model _1_test.Models.Book
+@{
+    ViewData["Title"] = "Uredi knjigo";
+}
+
+<div class="card-panel">
+    <h1>Uredi knjigo</h1>
+
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        @Html.EditorForModel()
+
+        <div class="form-section">
+            <button type="submit" class="btn btn-primary">Shrani</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Nazaj</a>
+        </div>
+    </form>
+</div>

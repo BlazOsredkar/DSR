@@ -1,0 +1,38 @@
+@model IEnumerable<_1_test.Models.User>
+@{
+    ViewData["Title"] = "Uporabniki";
+}
+
+<div class="card-panel">
+    <h1>Uporabniki</h1>
+    <p>Seznam uporabnikov iz baze (CRUD funkcionalnosti).</p>
+    <a class="btn btn-primary" asp-action="Create">Dodaj uporabnika</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ime</th>
+            <th>Priimek</th>
+            <th>E-posta</th>
+            <th>Datum rojstva</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.Email</td>
+            <td>@item.BirthDate.ToString("dd.MM.yyyy")</td>
+            <td class="text-end">
+                <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Podrobnosti</a>
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Uredi</a>
+                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Brisi</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

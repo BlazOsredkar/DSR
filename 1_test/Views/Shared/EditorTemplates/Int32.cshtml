@@ -1,0 +1,25 @@
+@model int?
+@using System.ComponentModel.DataAnnotations
+@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var fieldName = ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty);
+    var fieldId = TagBuilder.CreateSanitizedId(fieldName, "_");
+    var range = ViewData.ModelMetadata.ValidatorMetadata.OfType<RangeAttribute>().FirstOrDefault();
+    var min = range?.Minimum ?? 0;
+    var max = range?.Maximum ?? 100;
+    var value = Model ?? 0;
+}
+
+<!-- Naloga: Int32 slider (navodilo: "Tipu Int32 ... se pri urejanju izrise slider"). -->
+<div class="slider-field">
+    <input type="text"
+           id="@fieldId"
+           name="@fieldName"
+           value="@value"
+           class="form-control js-slider-input"
+           data-min="@min"
+           data-max="@max"
+           data-step="1" />
+    <div class="js-slider" data-target="#@fieldId"></div>
+</div>

@@ -1,0 +1,39 @@
+@model _1_test.Models.ViewModels.RegistrationStep2ViewModel
+@{
+    ViewData["Title"] = "Registracija - korak 2";
+}
+
+<div class="card-panel">
+    <h1>Registracija - korak 2</h1>
+    <p class="form-note">Vpis naslova, postne stevilke, poste in drzave.</p>
+
+    <form asp-action="Step2" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-section">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="PostalCode" class="form-label"></label>
+            <input asp-for="PostalCode" class="form-control" />
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="City" class="form-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="form-section">
+            <label asp-for="Country" class="form-label"></label>
+            <input asp-for="Country" class="form-control" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Naprej</button>
+    </form>
+</div>

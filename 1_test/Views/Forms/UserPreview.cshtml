@@ -1,0 +1,13 @@
+@model _1_test.Models.UserWithPassword
+@{
+    ViewData["Title"] = "Predogled uporabnika";
+}
+
+<div class="card-panel">
+    <h1>Predogled uporabnika (DisplayForModel)</h1>
+    @Html.DisplayForModel()
+
+    <div class="form-section">
+        <a class="btn btn-outline-secondary" asp-action="UserForm">Nazaj na obrazec</a>
+    </div>
+</div>

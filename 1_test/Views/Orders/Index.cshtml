@@ -1,0 +1,35 @@
+@model IEnumerable<_1_test.Models.Order>
+@{
+    ViewData["Title"] = "Narocila";
+}
+
+<div class="card-panel">
+    <h1>Narocila</h1>
+    <p>Prikaz nakupov v accordion pogledu (jQuery UI).</p>
+</div>
+
+<!-- Naloga: accordion (navodilo: "Glede na vas projekt smiselno prikazite uporabo jQuery UI accordion"). -->
+<div class="js-accordion">
+@foreach (var order in Model)
+{
+    <h3 class="accordion-title">Narocilo #@order.Id - @order.OrderDate.ToString("dd.MM.yyyy")</h3>
+    <div>
+        <dl class="row">
+            <dt class="col-sm-4">Uporabnik</dt>
+            <dd class="col-sm-8">@order.User?.FirstName @order.User?.LastName</dd>
+
+            <dt class="col-sm-4">Knjiga</dt>
+            <dd class="col-sm-8">@order.Book?.Title</dd>
+
+            <dt class="col-sm-4">Kolicina</dt>
+            <dd class="col-sm-8">@order.Quantity</dd>
+
+            <dt class="col-sm-4">Skupaj</dt>
+            <dd class="col-sm-8">@order.Total.ToString("0.##")</dd>
+
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-8">@order.Status</dd>
+        </dl>
+    </div>
+}
+</div>

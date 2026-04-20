@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:wght@400;600&display=swap");
+
+:root {
+  --bg: #f7f5f2;
+  --card: #ffffff;
+  --text: #1f2a33;
+  --muted: #5c6b73;
+  --accent: #c08b5c;
+  --border: #d8d2c7;
+}
+
+html {
+  font-size: 16px;
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 70px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: "Source Serif 4", "Georgia", serif;
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+}
+
+.site-header .navbar {
+  background: var(--card);
+}
+
+.main-shell {
+  padding-top: 1.5rem;
+}
+
+.content {
+  text-align: justify;
+}
+
+.current-time {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.site-footer {
+  background: var(--card);
+  padding: 1rem 0;
+  color: var(--muted);
+}
+
+.card-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.form-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.slider-field {
+  margin-bottom: 1.2rem;
+}
+
+.slider-field .js-slider {
+  margin-top: 0.5rem;
+}
+
+.table thead th {
+  background: #efe9e2;
+}
+
+.accordion-title {
+  font-weight: 600;
+}
+
+.form-section {
+  margin-bottom: 1.25rem;
+}
