@@ -2,3 +2,7 @@
 /1_test/obj
 1_test/app.db
 DSR.sln
+/1_test/1_test.Tests/bin
+/1_test/1_test.Tests/obj
+/1_test/1_test.SeleniumTests/obj
+/1_test/1_test.SeleniumTests/bin

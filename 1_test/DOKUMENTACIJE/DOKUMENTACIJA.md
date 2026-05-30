@@ -26,8 +26,15 @@ dotnet ef database update
 - Uporabnik: [1_test/Models/User.cs](1_test/Models/User.cs)
 - Knjiga (izdelek/storitev): [1_test/Models/Book.cs](1_test/Models/Book.cs)
 - Narocilo (obdelava podatkov): [1_test/Models/Order.cs](1_test/Models/Order.cs)
+- Nakup (Web API + kosarica): [1_test/Models/Purchase.cs](1_test/Models/Purchase.cs)
 
 Vse entitete vsebujejo osnovne tipe (DateTime, String, Int, Double) in validacije.
+
+## Identity uporabnik (prijava in vloge)
+
+- Identity uporabnik: [1_test/Models/ApplicationUser.cs](1_test/Models/ApplicationUser.cs)
+- Vloge (admin/user): [1_test/Infrastructure/AppRoles.cs](1_test/Infrastructure/AppRoles.cs)
+- Seed admin uporabnika in vlog: [1_test/Data/IdentitySeeder.cs](1_test/Data/IdentitySeeder.cs)
 
 ## Code First baza in kontekst
 
@@ -35,6 +42,7 @@ Vse entitete vsebujejo osnovne tipe (DateTime, String, Int, Double) in validacij
 - Sejanje podatkov in `Migrate()`: [1_test/Data/DbSeeder.cs](1_test/Data/DbSeeder.cs)
 - Povezava na SQLite v konfiguraciji: [1_test/appsettings.json](1_test/appsettings.json)
 - Registracija DB in sej: [1_test/Program.cs](1_test/Program.cs)
+- Identity in Google prijava: [1_test/Program.cs](1_test/Program.cs)
 
 ## Uporabnik brez gesel v bazi
 
@@ -45,13 +53,13 @@ To izpolni zahtevo, da razred za bazo ne vsebuje podatkov o geslu.
 
 ## Layout, glava, noga, navigacija
 
-- Layout (glava, meni, noga, datum/cas): [1_test/Views/Shared/_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
+- Layout (glava, meni, noga, datum/cas): [1_test/Views/Shared/\_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
 - Glavni vsebinski del se spreminja prek `@RenderBody()` v layoutu.
 - Navigacija vsebuje povezave do vseh podstrani.
 
 ## Trenutni datum in cas
 
-- Izpis ob vsakem nalaganju strani: [1_test/Views/Shared/_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
+- Izpis ob vsakem nalaganju strani: [1_test/Views/Shared/\_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
 
 ## Skupni CSS in poravnava besedila
 
@@ -61,7 +69,7 @@ To izpolni zahtevo, da razred za bazo ne vsebuje podatkov o geslu.
 
 ## Responsive design in UI framework
 
-- Bootstrap je vkljucen v layout: [1_test/Views/Shared/_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
+- Bootstrap je vkljucen v layout: [1_test/Views/Shared/\_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
 - Uporabljeni so Bootstrap grid in komponente v viewih (npr. domača stran).
 
 ## Strani za glavne entitete (dynamicne)
@@ -92,6 +100,7 @@ To izpolni zahtevo, da razred za bazo ne vsebuje podatkov o geslu.
 - Shranjevanje v sejo: [1_test/Infrastructure/SessionExtensions.cs](1_test/Infrastructure/SessionExtensions.cs)
 
 Kako deluje:
+
 - Vsak korak je `GET` prikaz in `POST` obdelava.
 - Po `POST` se podatki shranijo v sejo in sledi `RedirectToAction`, kar je PRG.
 - Povzetek prebere podatke iz seje in jih prikaze v tabeli.
@@ -111,6 +120,7 @@ Validacija je implementirana z DataAnnotations (brez JavaScript validacije).
 - Kontroler PRG: [1_test/Controllers/FormsController.cs](1_test/Controllers/FormsController.cs)
 
 Kako deluje:
+
 - `EditorForModel()` uporabi predloge za osnovne tipe (Int32/Double/DateTime).
 - Po `POST` se podatki shranijo v sejo in sledi `RedirectToAction`.
 - `DisplayForModel()` prikaze podatke v povzetku.
@@ -142,6 +152,37 @@ Kako deluje:
 - Uporabniki CRUD: [1_test/Controllers/UsersController.cs](1_test/Controllers/UsersController.cs)
 - Knjige CRUD: [1_test/Controllers/BooksController.cs](1_test/Controllers/BooksController.cs)
 - Narocila (seznam): [1_test/Controllers/OrdersController.cs](1_test/Controllers/OrdersController.cs)
+
+## Avtentikacija in avtorizacija (Vaja 6)
+
+- Prijava/odjava + zunanji ponudnik: [1_test/Controllers/AccountController.cs](1_test/Controllers/AccountController.cs)
+- Registracija navadnega uporabnika (obstojeci koraki): [1_test/Controllers/RegistrationController.cs](1_test/Controllers/RegistrationController.cs)
+- Administratorsko upravljanje uporabnikov (Identity): [1_test/Controllers/AdminUsersController.cs](1_test/Controllers/AdminUsersController.cs)
+- Prikaz povezav glede na vlogo: [1_test/Views/Shared/\_Layout.cshtml](1_test/Views/Shared/_Layout.cshtml)
+- Omejitve dostopa: `[Authorize]` in `[Authorize(Roles = "admin")]` v kontrolerjih (Books, Orders, AdminUsers)
+
+Privzeta uporabnika (seed):
+
+- admin: `admin@dsr.local` / `Admin123!`
+- user: `user@dsr.local` / `User123!`
+
+Za Google prijavo vnesi `ClientId` in `ClientSecret` v konfiguracijo (glej Vaja 6 dokumentacijo).
+
+## Web API nakupi (Vaja 7)
+
+- Model nakupa: [1_test/Models/Purchase.cs](1_test/Models/Purchase.cs)
+- Postavke nakupa: [1_test/Models/PurchaseItem.cs](1_test/Models/PurchaseItem.cs)
+- DTOji za Web API: [1_test/Models/Dto/PurchaseDtos.cs](1_test/Models/Dto/PurchaseDtos.cs)
+- Web API kontroler: [1_test/Controllers/PurchasesApiController.cs](1_test/Controllers/PurchasesApiController.cs)
+- MVC kosarica + checkout: [1_test/Controllers/PurchasesController.cs](1_test/Controllers/PurchasesController.cs)
+- Pogledi kosarice in zgodovine: [1_test/Views/Purchases](1_test/Views/Purchases)
+
+## Testni projekti (Vaja 8 + Vaja 9)
+
+- Unit testi (xUnit): [1_test/1_test.Tests](1_test/1_test.Tests)
+- Selenium UI testi: [1_test/1_test.SeleniumTests](1_test/1_test.SeleniumTests)
+- Navodila za unit teste: [1_test/DOKUMENTACIJE/Vaja8_UnitTesti.md](1_test/DOKUMENTACIJE/Vaja8_UnitTesti.md)
+- Navodila za Selenium teste: [1_test/DOKUMENTACIJE/Vaja9_Selenium.md](1_test/DOKUMENTACIJE/Vaja9_Selenium.md)
 
 ## Kako deluje (na kratko za test)
 

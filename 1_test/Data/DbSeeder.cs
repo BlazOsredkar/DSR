@@ -13,9 +13,9 @@ public static class DbSeeder
         // Naloga: Code First baza z migracijami (navodilo: "postavite podatkovno bazo").
         context.Database.Migrate();
 
-        if (!context.Users.Any())
+        if (!context.UserProfiles.Any())
         {
-            context.Users.AddRange(
+            context.UserProfiles.AddRange(
                 new User
                 {
                     FirstName = "Ana",
@@ -75,7 +75,7 @@ public static class DbSeeder
 
         if (!context.Orders.Any())
         {
-            var user = context.Users.First();
+            var user = context.UserProfiles.First();
             var book = context.Books.First();
 
             context.Orders.AddRange(

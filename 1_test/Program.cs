@@ -1,7 +1,9 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using _1_test.Data;
 using _1_test.Infrastructure;
+using _1_test.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,36 @@ builder.Services.AddControllersWithViews(options =>
     options.ModelBinderProviders.Insert(1, new FlexibleDoubleModelBinderProvider());
 });
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireDigit = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
+var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(googleClientSecret))
+{
+    builder.Services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            options.ClientId = googleClientId;
+            options.ClientSecret = googleClientSecret;
+        });
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -22,6 +54,8 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = ".DSR.Session";
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
+
+builder.Services.AddHttpClient();
 
 var slCulture = new CultureInfo("sl-SI");
 CultureInfo.DefaultThreadCurrentCulture = slCulture;
@@ -41,9 +75,11 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
@@ -51,6 +87,7 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 DbSeeder.Seed(app);
+await IdentitySeeder.SeedAsync(app.Services);
 
 
 app.Run();

@@ -1,0 +1,61 @@
+@model List<_1_test.Models.Dto.PurchaseReadDto>
+@{
+    var isAdminView = (ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty) == "All";
+    ViewData["Title"] = isAdminView ? "Vsi nakupi" : "Moji nakupi";
+}
+
+<div class="card-panel">
+    <h1>@(isAdminView ? "Vsi nakupi" : "Moji nakupi")</h1>
+    <p>Pregled preteklih nakupov.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Se nimate zakljucenih nakupov.</div>
+}
+else
+{
+    <div class="js-accordion">
+    @foreach (var purchase in Model)
+    {
+        <h3 class="accordion-title">Nakup #@purchase.Id - @purchase.PurchaseDate.ToString("dd.MM.yyyy")</h3>
+        <div>
+            <dl class="row">
+                <dt class="col-sm-4">Status</dt>
+                <dd class="col-sm-8">@purchase.Status</dd>
+
+                <dt class="col-sm-4">Naslov dostave</dt>
+                <dd class="col-sm-8">@purchase.DeliveryAddress</dd>
+
+                <dt class="col-sm-4">Kontakt</dt>
+                <dd class="col-sm-8">@purchase.ContactPhone</dd>
+
+                <dt class="col-sm-4">Skupaj</dt>
+                <dd class="col-sm-8">@purchase.TotalPrice.ToString("0.##")</dd>
+            </dl>
+
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Izdelek</th>
+                        <th>Kolicina</th>
+                        <th>Cena</th>
+                        <th>Skupaj</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in purchase.Items)
+                {
+                    <tr>
+                        <td>@item.BookTitle</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.UnitPrice.ToString("0.##")</td>
+                        <td>@item.LineTotal.ToString("0.##")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    </div>
+}

@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using _1_test.Data;
+using _1_test.Infrastructure;
 using _1_test.Models;
 
 namespace _1_test.Controllers;
 
+[Authorize]
 public class BooksController : Controller
 {
     private readonly AppDbContext _context;
@@ -36,6 +39,7 @@ public class BooksController : Controller
         return View(book);
     }
 
+    [Authorize(Roles = AppRoles.Admin)]
     public IActionResult Create()
     {
         return View(new Book { PublishDate = DateTime.Today });
@@ -43,6 +47,7 @@ public class BooksController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> Create(Book book)
     {
         if (!ModelState.IsValid)
@@ -55,6 +60,7 @@ public class BooksController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -73,6 +79,7 @@ public class BooksController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> Edit(int id, Book book)
     {
         if (id != book.Id)
@@ -90,6 +97,7 @@ public class BooksController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -108,6 +116,7 @@ public class BooksController : Controller
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var book = await _context.Books.FindAsync(id);

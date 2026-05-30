@@ -1,0 +1,65 @@
+@model _1_test.Models.ViewModels.PurchaseCheckoutViewModel
+@{
+    ViewData["Title"] = "Blagajna";
+    var cartItems = ViewBag.CartItems as List<_1_test.Models.CartItem> ?? new List<_1_test.Models.CartItem>();
+    var total = ViewBag.Total as double? ?? 0;
+}
+
+<div class="card-panel">
+    <h1>Blagajna</h1>
+    <p>Izpolnite manjkajoce podatke in zakljucite nakup.</p>
+</div>
+
+@if (cartItems.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Izdelek</th>
+                <th>Cena</th>
+                <th>Kolicina</th>
+                <th>Skupaj</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in cartItems)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.UnitPrice.ToString("0.##")</td>
+                <td>@item.Quantity</td>
+                <td>@item.LineTotal.ToString("0.##")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="mb-3">
+        <strong>Skupaj: @total.ToString("0.##")</strong>
+    </div>
+}
+
+<form asp-action="Checkout" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-section">
+        <label asp-for="DeliveryAddress" class="form-label"></label>
+        <input asp-for="DeliveryAddress" class="form-control" />
+        <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-section">
+        <label asp-for="ContactPhone" class="form-label"></label>
+        <input asp-for="ContactPhone" class="form-control" />
+        <span asp-validation-for="ContactPhone" class="text-danger"></span>
+    </div>
+
+    <div class="form-section">
+        <label asp-for="Note" class="form-label"></label>
+        <textarea asp-for="Note" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Note" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="checkout-submit">Zakljuci nakup</button>
+    <a class="btn btn-outline-secondary" asp-action="Cart">Nazaj na kosarico</a>
+</form>

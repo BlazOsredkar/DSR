@@ -7,6 +7,8 @@
     <h1>Registracija - povzetek</h1>
     <p class="form-note">Izpis vseh vpisanih podatkov.</p>
 
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <table class="table">
         <tbody>
             <tr><th>Ime</th><td>@Model.FirstName</td></tr>
@@ -24,5 +26,8 @@
         </tbody>
     </table>
 
+    <form asp-action="Complete" method="post" class="d-inline">
+        <button type="submit" class="btn btn-primary">Zakljuci registracijo</button>
+    </form>
     <a class="btn btn-outline-secondary" asp-action="Step1">Nazaj na 1. korak</a>
 </div>

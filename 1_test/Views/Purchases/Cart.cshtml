@@ -1,0 +1,60 @@
+@model List<_1_test.Models.CartItem>
+@{
+    ViewData["Title"] = "Kosarica";
+    var total = Model.Sum(i => i.LineTotal);
+}
+
+<div class="card-panel">
+    <h1>Kosarica</h1>
+    <p>Pregled izbranih izdelkov pred nakupom.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Kosarica je prazna.</div>
+    <a class="btn btn-outline-primary" asp-controller="Books" asp-action="Index">Nazaj na knjige</a>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Izdelek</th>
+                <th>Cena</th>
+                <th>Kolicina</th>
+                <th>Skupaj</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.UnitPrice.ToString("0.##")</td>
+                <td>
+                    <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="bookId" value="@item.BookId" />
+                        <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control form-control-sm d-inline" style="width: 80px" />
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Posodobi</button>
+                    </form>
+                </td>
+                <td>@item.LineTotal.ToString("0.##")</td>
+                <td>
+                    <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="bookId" value="@item.BookId" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Odstrani</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <strong>Skupaj: @total.ToString("0.##")</strong>
+        <a class="btn btn-primary" asp-action="Checkout">Na blagajno</a>
+    </div>
+}

@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1_test.Controllers;
 
+[Authorize]
 public class PresentationController : Controller
 {
     // Naloga: staticne strani za glavne entitete (navodilo: "izpisete v staticni obliki podatke").

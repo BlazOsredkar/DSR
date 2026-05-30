@@ -1,0 +1,35 @@
+@model List<_1_test.Models.ViewModels.AdminUserListItemViewModel>
+@{
+    ViewData["Title"] = "Uporabniki (Identity)";
+}
+
+<div class="card-panel">
+    <h1>Upravljanje uporabnikov</h1>
+    <p>Administratorski pregled in urejanje uporabnikov (Identity).</p>
+    <a class="btn btn-primary" asp-action="Create">Dodaj uporabnika</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>E-posta</th>
+            <th>Ime in priimek</th>
+            <th>Vloga</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.FullName</td>
+            <td>@(user.IsAdmin ? "admin" : "user")</td>
+            <td class="text-end">
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@user.Id">Uredi</a>
+                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@user.Id">Brisi</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

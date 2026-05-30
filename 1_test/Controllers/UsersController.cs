@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using _1_test.Data;
+using _1_test.Infrastructure;
 using _1_test.Models;
 
 namespace _1_test.Controllers;
 
+[Authorize(Roles = AppRoles.Admin)]
 public class UsersController : Controller
 {
     private readonly AppDbContext _context;
@@ -17,7 +20,7 @@ public class UsersController : Controller
     // Naloga: izpis vseh elementov (navodilo: "Izpis vseh elementov modela").
     public async Task<IActionResult> Index()
     {
-        var users = await _context.Users.ToListAsync();
+        var users = await _context.UserProfiles.ToListAsync();
         return View(users);
     }
 
@@ -29,7 +32,7 @@ public class UsersController : Controller
             return NotFound();
         }
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.Id == id);
         if (user == null)
         {
             return NotFound();
@@ -66,7 +69,7 @@ public class UsersController : Controller
             return NotFound();
         }
 
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.UserProfiles.FindAsync(id);
         if (user == null)
         {
             return NotFound();
@@ -102,7 +105,7 @@ public class UsersController : Controller
             return NotFound();
         }
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.Id == id);
         if (user == null)
         {
             return NotFound();
@@ -115,10 +118,10 @@ public class UsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.UserProfiles.FindAsync(id);
         if (user != null)
         {
-            _context.Users.Remove(user);
+            _context.UserProfiles.Remove(user);
             await _context.SaveChangesAsync();
         }
 

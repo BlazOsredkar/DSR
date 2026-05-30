@@ -1,0 +1,27 @@
+@model _1_test.Models.ViewModels.AdminUserListItemViewModel
+@{
+    ViewData["Title"] = "Brisi uporabnika";
+}
+
+<div class="card-panel">
+    <h1>Brisi uporabnika</h1>
+    <p>Ali res zelite izbrisati uporabnika?</p>
+
+    <dl class="row">
+        <dt class="col-sm-4">E-posta</dt>
+        <dd class="col-sm-8">@Model.Email</dd>
+
+        <dt class="col-sm-4">Ime in priimek</dt>
+        <dd class="col-sm-8">@Model.FullName</dd>
+
+        <dt class="col-sm-4">Vloga</dt>
+        <dd class="col-sm-8">@(Model.IsAdmin ? "admin" : "user")</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger">Potrdi brisanje</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazaj</a>
+    </form>
+</div>

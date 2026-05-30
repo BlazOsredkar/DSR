@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using _1_test.Infrastructure;
 using _1_test.Models;
@@ -9,6 +10,14 @@ public class RegistrationController : Controller
 {
     private const string SessionKey = "RegistrationData";
     private const string TabsSessionKey = "RegistrationTabsData";
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+
+    public RegistrationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    {
+        _userManager = userManager;
+        _signInManager = signInManager;
+    }
 
     // Naloga: 4-koracni obrazec (navodilo: "spletni obrazec iz 4 korakov").
     public IActionResult Step1()
@@ -120,6 +129,55 @@ public class RegistrationController : Controller
         }
 
         return View(data);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Complete()
+    {
+        var data = GetSessionData();
+        if (string.IsNullOrWhiteSpace(data.Email))
+        {
+            return RedirectToAction(nameof(Step1));
+        }
+
+        if (data.Password != data.ConfirmPassword)
+        {
+            ModelState.AddModelError(string.Empty, "Gesli se ne ujemata.");
+            return View(nameof(Summary), data);
+        }
+
+        var user = new ApplicationUser
+        {
+            UserName = data.Email,
+            Email = data.Email,
+            FirstName = data.FirstName,
+            LastName = data.LastName,
+            BirthDate = data.BirthDate,
+            Emso = data.Emso,
+            Age = data.Age,
+            Address = data.Address,
+            PostalCode = data.PostalCode,
+            City = data.City,
+            Country = data.Country
+        };
+
+        var result = await _userManager.CreateAsync(user, data.Password);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(nameof(Summary), data);
+        }
+
+        await _userManager.AddToRoleAsync(user, AppRoles.User);
+        await _signInManager.SignInAsync(user, isPersistent: false);
+
+        HttpContext.Session.Remove(SessionKey);
+        return RedirectToAction("Index", "Home");
     }
 
     // Naloga: obrazec z zavihki (navodilo: "Obrazec ... zavihki").
